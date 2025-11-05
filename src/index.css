@@ -1,0 +1,115 @@
+/* Import Tailwind v4 layers */
+@import "tailwindcss";
+
+/* ===== Global Reset & Layout ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable both-edges;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+
+  /* Make anchor scrolling account for sticky header */
+  scroll-padding-top: var(--header-height, 56px);
+}
+
+:root {
+  --header-height: 56px; /* keep in sync with HEADER_H in App.tsx */
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: #ffffff;
+  background-color: #000000;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: block;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#root {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* Base elements */
+
+a {
+  font-weight: 500;
+  color: #7aa2ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover { color: #9cb7ff; }
+
+h1 { font-size: 3.2em; line-height: 1.1; }
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+button:hover { border-color: #7aa2ff; }
+button:focus,
+button:focus-visible { outline: 4px auto -webkit-focus-ring-color; }
+
+/* Layout blocks */
+
+section, main, footer {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Images/SVGs never push layout wide */
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Optional Scrollbar styling */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background-color: #1e90ff; border-radius: 8px; }
+
+/* Tailwind base override */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/* IMPORTANT: No global `header { position: sticky }` here.
+   The React logic controls when the header becomes fixed. */
