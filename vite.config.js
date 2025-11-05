@@ -5,4 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/adesh-portfolio/',
+  server: {
+    host: true, // Listen on all local IPs
+    port: 5173,
+    strictPort: true,
+    open: true // Open browser automatically
+  }
 })
