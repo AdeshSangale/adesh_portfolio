@@ -220,7 +220,7 @@ export default function App() {
     if (!sentinel) return;
 
     const obs = new IntersectionObserver(
-      ([entry]) => setIsSticky(!entry.isIntersecting),
+      ([entry]) => entry && setIsSticky(!entry.isIntersecting),
       { root: null, threshold: 0, rootMargin: "-8px 0px 0px 0px" }
     );
     obs.observe(sentinel);
