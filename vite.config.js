@@ -1,14 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
+// IMPORTANT: set your repo name here 👇
 export default defineConfig({
+  base: "adesh_portfolio/",
   plugins: [react()],
-  base: '/adesh-portfolio/',
-  server: {
-    host: true, // Listen on all local IPs
-    port: 5173,
-    strictPort: true,
-    open: true // Open browser automatically
-  }
-})
+});

@@ -1,18 +1,16 @@
 {
-  "name": "adeshportfolio",
+  "name": "adesh_portfolio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "homepage": "https://github.com/AdeshSangale/adesh_portfolio",
+  "homepage": "https://github.com/AdeshSangale/adesh_portfolio",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-
-    
+    "deploy": "gh-pages -d dist -r https://github.com/AdeshSangale/adesh_portfolio.git"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
