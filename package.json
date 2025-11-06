@@ -1,9 +1,9 @@
 {
-  "name": "adesh_portfolio",
+  "name": "adeshportfolio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/AdeshSangale/adesh_portfolio",
+  "homepage": "https://github.com/AdeshSangale/adeshportfolio.git",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
