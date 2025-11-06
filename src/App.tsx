@@ -151,6 +151,13 @@ const PROJECTS = [
     repo: PERSONAL.github,
     live: "#",
   },
+  {
+    title: "Expats Mate (WIP)",
+    desc: "Responsive landing with custom German city selector and multi-step forms.",
+    tags: ["HTML", "CSS", "JS", "Responsive"],
+    live: "#",
+    repo: "#",
+  },
 ];
 
 const SKILLS = [
@@ -230,6 +237,9 @@ export default function App() {
   // header height (keep spacer equal)
   const HEADER_H = 56;
 
+  // NEW: mobile nav open state
+  const [navOpen, setNavOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#001F3F] via-[#001022] to-black text-white">
       {/* Progress line */}
@@ -244,6 +254,7 @@ export default function App() {
       {/* Spacer when fixed */}
       {isSticky && <div style={{ height: HEADER_H }} aria-hidden />}
 
+      {/* ======== NAVBAR (reworked, overlap-proof) ======== */}
       <motion.header
         initial={false}
         animate={isSticky ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
@@ -260,17 +271,20 @@ export default function App() {
           animate={isSticky ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
           className="relative mx-auto w-full max-w-6xl px-6 h-full flex items-center"
         >
-          {/* Left: Brand */}
+          {/* Left: Brand (never shrinks) */}
           <motion.button
             onClick={() => scrollTo("home")}
             whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2 font-semibold text-cyan-300"
+            className="flex items-center gap-2 font-semibold text-cyan-300 flex-none"
+            aria-label="Go to home"
           >
-            <Code2 className="h-5 w-5" /> Adesh Sangale
+            <Code2 className="h-5 w-5" />
+            {/* Hide name on extra-small to avoid collision with chips */}
+            <span className="hidden sm:inline">Adesh Sangale</span>
           </motion.button>
 
-          {/* Center: Navigation */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6 text-sm text-gray-200">
+          {/* Center: Navigation (desktop only ≥ lg) */}
+          <nav className="hidden lg:flex flex-1 justify-center items-center gap-4 text-sm text-gray-200">
             {["home", "about", "skills", "projects", "experience", "contact"].map((k) => (
               <motion.button
                 key={k}
@@ -284,12 +298,12 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Right: Social Icons */}
-          <div className="ml-auto flex items-center gap-4 text-cyan-300">
+          {/* Right: Socials + Hamburger (never shrinks) */}
+          <div className="ml-auto flex items-center gap-2 text-cyan-300 flex-none">
             <motion.a
               href={PERSONAL.github}
               aria-label="GitHub"
-              className="p-2 hover:bg-cyan-900/30 rounded-xl"
+              className="p-2 hover:bg-cyan-900/30 rounded-xl hidden sm:inline"
               target="_blank"
               rel="noreferrer"
               whileHover={{ y: -2 }}
@@ -299,7 +313,7 @@ export default function App() {
             <motion.a
               href={PERSONAL.linkedin}
               aria-label="LinkedIn"
-              className="p-2 hover:bg-cyan-900/30 rounded-xl"
+              className="p-2 hover:bg-cyan-900/30 rounded-xl hidden sm:inline"
               target="_blank"
               rel="noreferrer"
               whileHover={{ y: -2 }}
@@ -309,14 +323,49 @@ export default function App() {
             <motion.a
               href={`mailto:${PERSONAL.email}`}
               aria-label="Email"
-              className="p-2 hover:bg-cyan-900/30 rounded-xl"
+              className="p-2 hover:bg-cyan-900/30 rounded-xl hidden sm:inline"
               whileHover={{ y: -2 }}
             >
               <Mail className="h-5 w-5" />
             </motion.a>
+
+            {/* Hamburger button visible below lg */}
+            <button
+              className="lg:hidden rounded-xl bg-white/5 hover:bg-white/10 px-3 py-2"
+              onClick={() => setNavOpen((v) => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={navOpen}
+            >
+              {/* 3 bars (no new icon imports needed) */}
+              <span className="block w-5 h-0.5 bg-cyan-300 mb-1" />
+              <span className="block w-5 h-0.5 bg-cyan-300 mb-1" />
+              <span className="block w-5 h-0.5 bg-cyan-300" />
+            </button>
           </div>
         </motion.div>
+
+        {/* Mobile dropdown (only < lg) */}
+        {navOpen && (
+          <div className="lg:hidden border-t border-cyan-800">
+            <ul className="mx-auto max-w-6xl px-6 py-3 grid gap-2">
+              {["home", "about", "skills", "projects", "experience", "contact"].map((k) => (
+                <li key={k}>
+                  <button
+                    onClick={() => {
+                      setNavOpen(false);
+                      scrollTo(k as SectionKey);
+                    }}
+                    className="w-full text-left capitalize rounded-xl bg-[#0f2332] px-4 py-3 text-white/90 hover:bg-[#133047]"
+                  >
+                    {k}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </motion.header>
+      {/* ======== /NAVBAR ======== */}
 
       {/* ---------- Hero (Snapshot removed, grid collapsed) ---------- */}
       <section ref={sections.home} className="relative overflow-hidden">
@@ -390,25 +439,25 @@ export default function App() {
         </div>
       </section>
 
-{/* About */}
-<section ref={sections.about} className="mx-auto max-w-6xl px-4 py-16 text-gray-200">
-  <div style={{ perspective: 1200 }}>
-    <Reveal variants={popBehindText}>
-      <h2 className="text-3xl font-bold text-cyan-300">About</h2>
-    </Reveal>
-    <Reveal variants={popBehindText}>
-      <p
-        className="mt-4 max-w-3xl text-gray-300 leading-relaxed
+      {/* About */}
+      <section ref={sections.about} className="mx-auto max-w-6xl px-4 py-16 text-gray-200">
+        <div style={{ perspective: 1200 }}>
+          <Reveal variants={popBehindText}>
+            <h2 className="text-3xl font-bold text-cyan-300">About</h2>
+          </Reveal>
+          <Reveal variants={popBehindText}>
+            <p
+              className="mt-4 max-w-3xl text-gray-300 leading-relaxed
                    [text-align:justify] [text-justify:inter-word]"
-      >
-        I’m a Software Engineer and Data Analyst with hands-on experience in Python
-        programming, data analysis, visualization, and full-stack fundamentals.
-        I build data pipelines and dashboards, design clean user interfaces,
-        and focus on readable, maintainable code. Outside work, I enjoy cricket and chess.
-      </p>
-    </Reveal>
-  </div>
-</section>
+            >
+              I’m a Software Engineer and Data Analyst with hands-on experience in Python
+              programming, data analysis, visualization, and full-stack fundamentals.
+              I build data pipelines and dashboards, design clean user interfaces,
+              and focus on readable, maintainable code. Outside work, I enjoy cricket and chess.
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
       {/* Skills */}
       <section ref={sections.skills} className="mx-auto max-w-6xl px-4 py-16">
@@ -695,13 +744,13 @@ export default function App() {
               placeholder="Your name"
             />
             <motion.input
-  variants={fadeUp}
-  name="email"
-  type="email"
-  required
-  className="rounded-2xl border border-cyan-800 bg-[#00121a] px-4 py-3 text-white outline-none focus:ring-2 focus:ring-cyan-600"
-  placeholder="Email"
-/>
+              variants={fadeUp}
+              name="email"
+              type="email"
+              required
+              className="rounded-2xl border border-cyan-800 bg-[#00121a] px-4 py-3 text-white outline-none focus:ring-2 focus:ring-cyan-600"
+              placeholder="Email"
+            />
             <motion.input
               variants={fadeUp}
               name="subject"
@@ -772,3 +821,4 @@ export default function App() {
     </div>
   );
 }
+
